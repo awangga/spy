@@ -6,7 +6,7 @@ import config
 import serial
 from messaging.sms import SmsSubmit
 
-class SmsPDU(object):
+class Smspdu(object):
     def __init__(self, recipient=config.recipient, message=config.message):
         self.open()
         self.recipient = recipient
@@ -24,17 +24,18 @@ class SmsPDU(object):
         self.content = message
 
     def send(self):
-        self.pdu = SmsSubmit(self.recipient, self.content).to_pdu()[0]
         self.ser.flushInput()
         self.ser.flushOutput()
-        command = 'AT+CMGS=%d\r' % self.pdu.length
-        self.SendCommand(command,getline=True)
-        data = self.ser.readall()
-        print data
-        command = '%s\x1a' % self.pdu.pdu
-        self.SendCommand(command,getline=True)
-        data = self.ser.readall()
-        print data
+        self.pdu = SmsSubmit(self.recipient, self.content)
+        for xpdu in self.pdu.to_pdu():
+	        command = 'AT+CMGS=%d\r' % self.pdu.length
+	        self.SendCommand(command,getline=True)
+	        data = self.ser.readall()
+	        print data
+	        command = '%s\x1a' % self.pdu.pdu
+	        self.SendCommand(command,getline=True)
+	        data = self.ser.readall()
+	        print data
 
     def disconnect(self):
         self.ser.close()
