@@ -24,9 +24,20 @@ class Sms(object):
         self.content = message
 
     def send(self):
-        self.ser.write('''AT+CMGS="''' + self.recipient + '''"\r''')
-        self.ser.write(self.content + "\r")
-        self.ser.write(chr(26))
+        self.ser.flushInput()
+        self.ser.flushOutput()
+        command = '''AT+CMGS="''' + self.recipient + '''"\r'''
+        print self.SendCommand(command,getline=True)
+        data = self.ser.readall()
+        print data
+        command = self.content + "\r"
+        print self.SendCommand(command,getline=True)
+        data = self.ser.readall()
+        print data
+        command = chr(26)
+        print self.SendCommand(command,getline=True)
+        data = self.ser.readall()
+        print data
 
     def disconnect(self):
         self.ser.close()
