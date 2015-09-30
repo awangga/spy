@@ -27,15 +27,15 @@ class Sms(object):
         self.ser.flushInput()
         self.ser.flushOutput()
         command = '''AT+CMGS="''' + self.recipient + '''"\r'''
-        print self.SendCommand(command,getline=True)
+        self.SendCommand(command,getline=True)
         data = self.ser.readall()
         print data
         command = self.content + "\r"
-        print self.SendCommand(command,getline=True)
+        self.SendCommand(command,getline=True)
         data = self.ser.readall()
         print data
         command = chr(26)
-        print self.SendCommand(command,getline=True)
+        self.SendCommand(command,getline=True)
         data = self.ser.readall()
         print data
 
@@ -66,6 +66,14 @@ class Sms(object):
         self.ser.flushInput()
         self.ser.flushOutput()
         command = 'AT+CMGL="REC READ"\r\n'#gets incoming sms that has not been read
+        print self.SendCommand(command,getline=True)
+        data = self.ser.readall()
+        print data
+
+    def all(self):
+        self.ser.flushInput()
+        self.ser.flushOutput()
+        command = 'AT+CMGL="ALL"\r\n'#gets incoming sms that has not been read
         print self.SendCommand(command,getline=True)
         data = self.ser.readall()
         print data

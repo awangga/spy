@@ -7,6 +7,5 @@ import time
 
 sms = sms.Sms("089610707901","sebuah kekagokan")
 sms.send()
-time.sleep(10)
 sms.read()
 sms.disconnect()
