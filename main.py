@@ -9,3 +9,5 @@ sms.connectPhone
 sms.sendMessage
 sms.disconnectPhone
 
+h = sms.Read()
+h.GetReadSMS()
