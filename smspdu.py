@@ -28,11 +28,11 @@ class Smspdu(object):
         self.ser.flushOutput()
         self.pdu = SmsSubmit(self.recipient, self.content)
         for xpdu in self.pdu.to_pdu():
-	        command = 'AT+CMGS=%d\r' % self.pdu.length
+	        command = 'AT+CMGS=%d\r' % xpdu.length
 	        self.SendCommand(command,getline=True)
 	        data = self.ser.readall()
 	        print data
-	        command = '%s\x1a' % self.pdu.pdu
+	        command = '%s\x1a' % xpdu.pdu
 	        self.SendCommand(command,getline=True)
 	        data = self.ser.readall()
 	        print data
