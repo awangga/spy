@@ -25,11 +25,11 @@ class Sms(object):
     def send(self):
         self.ser.flushInput()
         self.ser.flushOutput()
-        command = '''AT+CMGS="''' + self.recipient + '''"\r'''
+        command = '''AT+CMGS="''' + self.recipient.encode() + '''"\r'''
         self.SendCommand(command,getline=True)
         data = self.ser.readall()
         print data
-        command = self.content + "\r"
+        command = self.content.encode() + "\r"
         self.SendCommand(command,getline=True)
         data = self.ser.readall()
         print data
