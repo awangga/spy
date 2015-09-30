@@ -6,14 +6,16 @@ import config
 import serial
 import time
 
-class Send(object):
+class Sms(object):
     def __init__(self, recipient=config.recipient, message=config.message):
-        self.ser = serial.Serial(config.serial, 115200, timeout=5)
-        self.ser.write('ATZ\r')
-        self.ser.write('AT+CMGF=1\r')
+        self.open()
         self.recipient = recipient
         self.content = message
-        
+
+    def open(self):
+        self.ser = serial.Serial(config.serial, 115200, timeout=5)
+        self.SendCommand('ATZ\r')
+        self.SendCommand('AT+CMGF=1\r')
 
     def setRecipient(self, number):
         self.recipient = number
@@ -21,32 +23,13 @@ class Send(object):
     def setContent(self, message):
         self.content = message
 
-    def connectPhone(self):
-        
-        time.sleep(1)
-
-    def sendMessage(self):
-        
-        time.sleep(1)
+    def send(self):
         self.ser.write('''AT+CMGS="''' + self.recipient + '''"\r''')
-        time.sleep(1)
         self.ser.write(self.content + "\r")
-        time.sleep(1)
         self.ser.write(chr(26))
-        time.sleep(1)
 
-    def disconnectPhone(self):
+    def disconnect(self):
         self.ser.close()
-
-class Read(object):
-
-    def __init__(self):
-        self.open()
-
-    def open(self):
-        self.ser = serial.Serial(config.serial, 115200, timeout=5)
-        self.SendCommand('ATZ\r')
-        self.SendCommand('AT+CMGF=1\r')
 
     def SendCommand(self,command, getline=True):
         self.ser.write(command)
@@ -60,7 +43,7 @@ class Read(object):
         print data
         return data 
 
-    def GetAllSMS(self):
+    def unread(self):
         self.ser.flushInput()
         self.ser.flushOutput()
         command = 'AT+CMGL="REC UNREAD"\r\n'#gets incoming sms that has not been read
@@ -68,7 +51,7 @@ class Read(object):
         data = self.ser.readall()
         print data
         
-    def GetReadSMS(self):
+    def read(self):
         self.ser.flushInput()
         self.ser.flushOutput()
         command = 'AT+CMGL="REC READ"\r\n'#gets incoming sms that has not been read
