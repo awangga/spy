@@ -1,5 +1,6 @@
 import SimpleHTTPServer
 import SocketServer
+import config
 
 PORT = 8000
 

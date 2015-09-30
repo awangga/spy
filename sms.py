@@ -4,7 +4,6 @@ sms.py - Used to send txt messages.
 """
 import config
 import serial
-import time
 
 class Sms(object):
     def __init__(self, recipient=config.recipient, message=config.message):
