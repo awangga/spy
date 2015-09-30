@@ -55,7 +55,7 @@ class Smspdu(object):
     def unread(self):
         self.ser.flushInput()
         self.ser.flushOutput()
-        command = 'AT+CMGL="REC UNREAD"\r\n'#gets incoming sms that has not been read
+        command = 'AT+CMGL=0\r\n'#gets incoming sms that has not been read
         self.SendCommand(command,getline=True)
         data = self.ser.readall()
         print data
@@ -63,7 +63,7 @@ class Smspdu(object):
     def read(self):
         self.ser.flushInput()
         self.ser.flushOutput()
-        command = 'AT+CMGL="REC READ"\r\n'#gets incoming sms that has not been read
+        command = 'AT+CMGL=1\r\n'#gets incoming sms that has not been read
         self.SendCommand(command,getline=True)
         data = self.ser.readall()
         print data
@@ -71,7 +71,7 @@ class Smspdu(object):
     def all(self):
         self.ser.flushInput()
         self.ser.flushOutput()
-        command = 'AT+CMGL="ALL"\r\n'#gets incoming sms that has not been read
+        command = 'AT+CMGL=4\r\n'#gets incoming sms that has not been read
         self.SendCommand(command,getline=True)
         data = self.ser.readall()
         print data
