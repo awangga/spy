@@ -83,3 +83,12 @@ class Smspdu(object):
         self.SendCommand(command,getline=True)
         data = self.ser.readall()
         print data
+
+    def get(self, idx):
+        self.ser.flushInput()
+        self.ser.flushOutput()
+        command = 'AT+CMGR=%s\r\n' % idx
+        self.SendCommand(command,getline=True)
+        data = self.ser.readall()
+        print data        
+        
