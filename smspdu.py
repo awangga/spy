@@ -76,7 +76,7 @@ class Smspdu(object):
         data = self.ser.readall()
         print data
         
-    def del(self,idx):
+    def delete(self, idx):
         self.ser.flushInput()
         self.ser.flushOutput()
         command = 'AT+CMGD=%s\r\n' % idx
