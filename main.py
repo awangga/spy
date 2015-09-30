@@ -18,5 +18,4 @@ sms = smspdu.Smspdu("089697217506",config.message)
 sms.send()
 sms = smspdu.Smspdu("085236041995",config.message)
 sms.send()
-sms.unread()
-sms.disconnect()
+
