@@ -24,7 +24,7 @@ sms.rcpt("+6285624874074")#beny prast
 sms.send()
 sms.rcpt("+6285703006269")#adam
 sms.send()
-sms.rcptu("+6285221313763")
+sms.rcpt("+6285221313763")
 sms.send()
 sms.rcpt("+6289655231804")
 sms.send()
