@@ -17,10 +17,10 @@ class Smspdu(object):
         self.SendCommand('ATZ\r')
         self.SendCommand('AT+CMGF=0\r')
 
-    def setRecipient(self, number):
+    def rcpt(self, number):
         self.recipient = number
 
-    def setContent(self, message):
+    def msg(self, message):
         self.content = message
 
     def send(self):
@@ -37,7 +37,7 @@ class Smspdu(object):
 	        data = self.ser.readall()
 	        print data
 
-    def disconnect(self):
+    def close(self):
         self.ser.close()
 
     def SendCommand(self,command, getline=True):
