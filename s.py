@@ -9,5 +9,5 @@ form = cgi.FieldStorage()
 
 sms = smspdu.Smspdu(form["rcpt"].value,form["msg"].value)
 sms.send()
-sms.close()
+#sms.close()
 
