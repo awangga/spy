@@ -1,5 +1,12 @@
 # spy
-SMS Python USB Modem
+SMS Python USB Modem Web Service
+
+### Rules
+ 1. Using Apache web server with CGI execution
+ 2. Make sure .py files is executable : a+x filename.py
+ 3. Set waiting time for receiving response in 25 seconds for using web service
+ 4. access to http://youripserver/s.py with rcpt and msg as POST method variable
+
 
 ### 3G Modem AT Commands for SMS
 General SMS Commands
