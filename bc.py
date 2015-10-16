@@ -8,9 +8,17 @@ import cgitb
 cgitb.enable()
 import cgi
 import smspdu
+import re
 form = cgi.FieldStorage()
 
-sms = smspdu.Smspdu(form["rcpt"].value,form["msg"].value)
-sms.send()
+rcpt = form["rcpt"].value
+msg = form["msg"].value
+
+rcptarr = re.split(',|;',rcpt)
+
+print rcptarr
+#sms = smspdu.Smspdu(rcpt,msg)
+
+#sms.send()
 #sms.close()
 
