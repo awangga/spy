@@ -17,8 +17,9 @@ msg = form["msg"].value
 rcptarr = re.split(',|;',rcpt)
 
 print rcptarr
+print msg
 #sms = smspdu.Smspdu(rcpt,msg)
 
 #sms.send()
-#sms.close()
+
 
