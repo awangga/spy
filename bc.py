@@ -16,11 +16,9 @@ msg = form["msg"].value
 
 rcptarr = re.split(',|;',rcpt)
 
-print rcptarr
-print msg
 sms = libs.Libs(rcptarr[0],msg)
 for num in rcptarr:
-	print r
+	print num
 	sms.rcpt(num)
 	sms.send()
 	
