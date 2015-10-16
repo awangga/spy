@@ -27,16 +27,16 @@ class Sms(object):
         self.ser.flushOutput()
         command = '''AT+CMGS="''' + self.recipient.encode() + '''"\r'''
         self.SendCommand(command,getline=True)
-        #data = self.ser.readall()
-        #print data
+        data = self.ser.readall()
+        print data
         command = self.content.encode() + "\r"
         self.SendCommand(command,getline=True)
-        #data = self.ser.readall()
-        #print data
+        data = self.ser.readall()
+        print data
         command = chr(26)
         self.SendCommand(command,getline=True)
-        #data = self.ser.readall()
-        #print data
+        data = self.ser.readall()
+        print data
 
     def disconnect(self):
         self.ser.close()
