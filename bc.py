@@ -7,7 +7,7 @@ print
 import cgitb
 cgitb.enable()
 import cgi
-import smspdu
+import libs
 import re
 form = cgi.FieldStorage()
 
@@ -18,7 +18,10 @@ rcptarr = re.split(',|;',rcpt)
 
 print rcptarr
 print msg
-#sms = smspdu.Smspdu(rcpt,msg)
+for r in rcptarr:
+	print r
+
+#sms = libs.Libs(rcpt,msg)
 
 #sms.send()
 
