@@ -18,8 +18,12 @@ rcptarr = re.split(',|;',rcpt)
 
 print rcptarr
 print msg
-for r in rcptarr:
+sms = libs.Libs(rcptarr[0],msg)
+for num in rcptarr:
 	print r
+	sms.rcpt(num)
+	sms.send()
+	
 
 #sms = libs.Libs(rcpt,msg)
 
