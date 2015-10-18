@@ -5,6 +5,7 @@ sms.py - Used to send txt messages.
 import config
 import re
 import time
+from datetime import datetime
 import serial
 from messaging.sms import SmsSubmit
 
@@ -40,11 +41,13 @@ class Libs(object):
 	        #self.logfile.write('after send readall 1 \n')
 	        command = '%s\x1a' % xpdu.pdu
 	        self.SendCommand(command)
+	        data = self.Read4Line()
+	        print data
 	        #data = self.ser.readall()
 	        #data = self.Read('\n')
 	        #print data
-	        #self.logfile.write(str(time.clock()))
-	        #self.logfile.write('after send readall 2 \n')
+	        self.logfile.write(str(datetime.now()))
+	        self.logfile.write('after send read4line \n')
 		#data = areadline+breadline
 		#return data
 
@@ -52,13 +55,13 @@ class Libs(object):
         self.ser.close()
 
     def SendCommand(self,command, getline=True):
-        self.logfile.write(str(time.clock()))
+        self.logfile.write(str(datetime.now()))
         self.logfile.write('before send command\n'+str(command)+'\n')
         self.ser.write(command)
         data = ''
         if getline:
             data=self.ReadLine()
-        self.logfile.write(str(time.clock()))
+        self.logfile.write(str(datetime.now()))
         self.logfile.write('after send command\n'+str(command)+'\n')
         return data 
 
@@ -68,6 +71,12 @@ class Libs(object):
     
     def ReadLine(self):
         data = self.ser.readline()
+        print data
+        return data
+    
+    def Read4Line(self):
+        data = self.ser.readline()
+        data += self.ser.readline()
         data += self.ser.readline()
         data += self.ser.readline()
         print data
