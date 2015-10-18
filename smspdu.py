@@ -20,7 +20,7 @@ class Smspdu(object):
     def open(self):
         self.logfile.write(str(datetime.now()))
         self.logfile.write('open serial\n')
-        self.ser = serial.Serial(config.serial, 115200, timeout=5)
+        self.ser = serial.Serial(config.serial, 115200, timeout=2.05)
         self.logfile.write(str(datetime.now()))
         self.logfile.write('send ATZ\n')
         self.SendCommand('ATZ\r')

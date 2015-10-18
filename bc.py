@@ -23,11 +23,11 @@ for num in rcptarr:
 	sms.rcpt(num)
 	#time.sleep(3.5)
 	data = sms.send()
-	print data
-	if 'ERROR' in data:
-		print 'gagal kirim'
-	if 'OK' in data:
-		print 'berhasil kirim'
+	#print data
+	#if 'ERROR' in data:
+	#	print 'gagal kirim'
+	#if 'OK' in data:
+	#	print 'berhasil kirim'
 	#print sms.ReadAll()
 
 
