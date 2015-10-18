@@ -4,17 +4,28 @@ sms.py - Used to send txt messages.
 """
 import config
 import serial
+from datetime import datetime
+
+
 from messaging.sms import SmsSubmit
 
 class Smspdu(object):
     def __init__(self, recipient=config.recipient, message=config.message):
+        self.logfile = open("modem.log","w")
         self.open()
         self.recipient = recipient
         self.content = message
+        
 
     def open(self):
+        self.logfile.write(str(datetime.now()))
+        self.logfile.write('open serial\n')
         self.ser = serial.Serial(config.serial, 115200, timeout=5)
+        self.logfile.write(str(datetime.now()))
+        self.logfile.write('send ATZ\n')
         self.SendCommand('ATZ\r')
+        self.logfile.write(str(datetime.now()))
+        self.logfile.write('send ATZ\n')
         self.SendCommand('AT+CMGF=0\r')
 
     def rcpt(self, number):
@@ -28,14 +39,24 @@ class Smspdu(object):
         self.ser.flushOutput()
         self.pdu = SmsSubmit(self.recipient, self.content)
         for xpdu in self.pdu.to_pdu():
+	        self.logfile.write(str(datetime.now()))
+	        self.logfile.write('send CMGS\n')
 	        command = 'AT+CMGS=%d\r' % xpdu.length
 	        self.SendCommand(command,getline=True)
+	        self.logfile.write(str(datetime.now()))
+	        self.logfile.write('after send 1 CMGS\n')
 	        data = self.ser.readall()
 	        print data
+	        self.logfile.write(str(datetime.now()))
+	        self.logfile.write('after send 2 CMGS\n')
 	        command = '%s\x1a' % xpdu.pdu
 	        self.SendCommand(command,getline=True)
+	        self.logfile.write(str(datetime.now()))
+	        self.logfile.write('after send 3 CMGS\n')
 	        data = self.ser.readall()
 	        print data
+	        self.logfile.write(str(datetime.now()))
+	        self.logfile.write('after send 4 CMGS\n')
 
     def close(self):
         self.ser.close()

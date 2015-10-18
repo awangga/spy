@@ -13,7 +13,7 @@ class Libs(object):
         self.content = message
 
     def open(self):
-        self.ser = serial.Serial(config.serial, 115200, timeout=5)
+        self.ser = serial.Serial(config.serial, 115200, timeout=1)
         self.SendCommand('ATZ\r')
         self.SendCommand('AT+CMGF=0\r')
 
@@ -24,18 +24,20 @@ class Libs(object):
         self.content = message
 
     def send(self):
-        self.ser.flushInput()
-        self.ser.flushOutput()
+        #self.ser.flushInput()
+        #self.ser.flushOutput()
         self.pdu = SmsSubmit(self.recipient, self.content)
         for xpdu in self.pdu.to_pdu():
 	        command = 'AT+CMGS=%d\r' % xpdu.length
-	        self.SendCommand(command)
+	        areadline = self.SendCommand(command)
 	        #data = self.ser.readall()
 	        #print data
 	        command = '%s\x1a' % xpdu.pdu
-	        self.SendCommand(command)
+	        breadline = self.SendCommand(command)
 	        #data = self.ser.readall()
 	        #print data
+		data = areadline+breadline
+		return data
 
     def close(self):
         self.ser.close()
@@ -47,9 +49,13 @@ class Libs(object):
             data=self.ReadLine()
         return data 
 
+    def ReadAll(self):
+    	data = self.ser.readall()
+    	return data
+    
     def ReadLine(self):
         data = self.ser.readline()
-        print data
+        #print data
         return data 
 
     def unread(self):

@@ -7,7 +7,7 @@ import cgi
 import sms
 form = cgi.FieldStorage()
 
-sms = smspdu.Smspdu(form["rcpt"].value,form["msg"].value)
+sms = sms.Sms(form["rcpt"].value,form["msg"].value)
 sms.send()
 #sms.close()
 
