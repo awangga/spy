@@ -56,13 +56,13 @@ class Libs(object):
 
     def SendCommand(self,command,char,getline=True):
         self.logfile.write(str(datetime.now()))
-        self.logfile.write('   before send command '+char+' \n')
+        self.logfile.write('   before send command '+str(char)+' \n')
         self.ser.write(command)
         data = ''
         if getline:
             data=self.ReadLine(char)
         self.logfile.write(str(datetime.now()))
-        self.logfile.write('   after send command '+char+' \n')
+        self.logfile.write('   after send command '+str(char)+' \n')
         return data 
         
     def ReadAll(self):
