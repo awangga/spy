@@ -2,7 +2,7 @@
 SMS Python USB Modem Web Service
 
 ### Rules
- 1. Using Apache web server with CGI execution
+ 1. Using Apache web server with CGI execution and MongoDB
  2. Make sure .py files is executable : a+x filename.py
  3. Set waiting time for receiving response in 25 seconds for using web service
  4. access to http://youripserver/s.py with rcpt and msg as POST method variable
@@ -42,3 +42,4 @@ OK
  [1] http://www.diafaan.com/sms-tutorials/gsm-modem-tutorial/at-cmgf/
  [2] http://www.diafaan.com/sms-tutorials/gsm-modem-tutorial/at-cmgs-text-mode/
  [3] http://www.diafaan.com/sms-tutorials/gsm-modem-tutorial/at-cmgl-text-mode/
+ [4] http://andres.jaimes.net/870/setup-mongo-on-centos-6/
