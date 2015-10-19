@@ -43,3 +43,4 @@ OK
  [2] http://www.diafaan.com/sms-tutorials/gsm-modem-tutorial/at-cmgs-text-mode/
  [3] http://www.diafaan.com/sms-tutorials/gsm-modem-tutorial/at-cmgl-text-mode/
  [4] http://andres.jaimes.net/870/setup-mongo-on-centos-6/
+ [5] http://www.twit88.com/home/utility/sms-pdu-encode-decode
