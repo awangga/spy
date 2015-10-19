@@ -45,3 +45,4 @@ OK
  [4] http://andres.jaimes.net/870/setup-mongo-on-centos-6/
  [5] http://www.twit88.com/home/utility/sms-pdu-encode-decode
  [6] https://pypi.python.org/pypi/pymongo/
+ [7] http://altons.github.io/python/2013/01/21/gentle-introduction-to-mongodb-using-pymongo/
