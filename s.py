@@ -4,10 +4,23 @@ print
 import cgitb
 cgitb.enable()
 import cgi
-import smspdu
+import libs
+import re
 form = cgi.FieldStorage()
 
-sms = smspdu.Smspdu(form["rcpt"].value,form["msg"].value)
-sms.send()
+rcpt = form["rcpt"].value
+msg = form["msg"].value
+
+rcptarr = re.split(',|;',rcpt)
+
+sms = libs.Libs(rcptarr[0],msg)
+for num in rcptarr:
+	print ' \n *batas*'+num
+	sms.rcpt(num)
+	sms.send()
+
+
+#sms = smspdu.Smspdu(form["rcpt"].value,form["msg"].value)
+#sms.send()
 #sms.close()
 
