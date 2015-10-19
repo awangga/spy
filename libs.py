@@ -18,8 +18,20 @@ class Libs(object):
 
     def open(self):
         self.ser = serial.Serial(config.serial, 115200, timeout=config.timeout)
-        self.SendCommand('ATZ\r')
-        self.SendCommand('AT+CMGF=0\r')
+        self.ser.flushInput()
+        self.ser.flushOutput()
+        self.SendCommand('ATZ\r',8)
+        self.SendCommand('AT+CMGF=0\r',16)
+        #cocoba
+        #self.SendCommand('AT+CMGS=29\r',16)# ga usah pake read dulu karena menunggu >
+        #pdunya = '0891269846040000F111000D91261813020003F00000AA10F33ABC2C07A9C3EE717D0D5ABFCB'
+        #perintah = '%s\x1a' % pdunya
+        #self.SendCommand(perintah,len(perintah)+19)
+        #print 'sms kedua'
+        #self.SendCommand('AT+CMGS=29\r',16)# ga usah pake read dulu karena menunggu >
+        #pdunya = '0891269846040000F111000D91261813020003F00000AA10F33ABC2C07A9C3EE717D0D5ABFCB'
+        #perintah = '%s\x1a' % pdunya
+        #self.SendCommand(perintah,len(perintah)+19)
 
     def rcpt(self, number):
         self.recipient = number
@@ -28,57 +40,96 @@ class Libs(object):
         self.content = message
 
     def send(self):
-        self.ser.flushInput()
-        self.ser.flushOutput()
+        #self.ser.flushInput()
+        #self.ser.flushOutput()
         self.pdu = SmsSubmit(self.recipient, self.content)
         for xpdu in self.pdu.to_pdu():
 	        command = 'AT+CMGS=%d\r' % xpdu.length
-	        self.SendCommand(command)
+	        self.SendCommand(command,len(str(xpdu.length))+14)
 	        #data = self.ser.readall()
-	        #data = self.Read('\n')
+	        #data = self.ser.read(128)
 	        #print data
 	        #self.logfile.write(str(time.clock()))
 	        #self.logfile.write('after send readall 1 \n')
 	        command = '%s\x1a' % xpdu.pdu
-	        self.SendCommand(command)
-	        data = self.Read4Line()
-	        print data
+	        self.SendCommand(command,len(xpdu.pdu)+20)
+	        #print self.ser.readline()
 	        #data = self.ser.readall()
 	        #data = self.Read('\n')
 	        #print data
 	        self.logfile.write(str(datetime.now()))
-	        self.logfile.write('after send read4line \n')
+	        self.logfile.write('   after send a sms \n')
 		#data = areadline+breadline
 		#return data
 
     def close(self):
         self.ser.close()
 
-    def SendCommand(self,command, getline=True):
+    def SendCommand(self,command,char,getline=True):
         self.logfile.write(str(datetime.now()))
-        self.logfile.write('before send command\n'+str(command)+'\n')
+        self.logfile.write('   before send command init \n')
         self.ser.write(command)
         data = ''
         if getline:
-            data=self.ReadLine()
+            data=self.ReadLine(char)
         self.logfile.write(str(datetime.now()))
-        self.logfile.write('after send command\n'+str(command)+'\n')
+        self.logfile.write('   after send command init \n')
         return data 
-
+        
+    def SendCommands(self,command,n,getline=True):
+        self.logfile.write(str(datetime.now()))
+        self.logfile.write('   before send command init \n')
+        self.ser.write(command)
+        data = ''
+        if getline:
+            data=self.ReadLines(n)
+        self.logfile.write(str(datetime.now()))
+        self.logfile.write('   after send command init \n')
+        return data 
+        
     def ReadAll(self):
     	data = self.ser.readall()
     	return data
     
-    def ReadLine(self):
-        data = self.ser.readline()
+    def ReadLine(self,char):
+        #bytesToRead = self.ser.inWaiting()
+        #data = self.ser.read(bytesToRead)
+        data = self.ser.read(char)
+        #data = self.ser.readline()
+        #data += self.ser.readline()
+        #data += self.ser.readline()
+        #data += self.ser.readline()
+        if 'OK' in data:
+        	print ' berhasil '
+        if 'ERROR' in data:
+        	print ' gagal '
+        print data+' char:<'+str(char)+'> '
+        return data
+        
+    def ReadLines(self,n):
+        #bytesToRead = self.ser.inWaiting()
+        #data = self.ser.read(bytesToRead)
+        #data = self.ser.read(char)
+        data = ''
+        #data += self.ser.readline()
+        #data += self.ser.readline()
+        #data += self.ser.readline()
+        i=0
+        while i < n:
+        	data += self.ser.readline()
+        	print ' readline-> '+str(i)+' <- '
+        	i += 1
+        #if 'OK' in data:
+        #	print ' berhasil '
+        #if 'ERROR' in data:
+        #	print ' gagal '
         print data
         return data
-    
-    def Read4Line(self):
-        data = self.ser.readline()
-        data += self.ser.readline()
-        data += self.ser.readline()
-        data += self.ser.readline()
+        
+    def ReadStatus(self):
+        data = ''
+        while (not ('OK' in data)) or (not ('ERROR' in data)):
+        	data += self.ser.readline()
         print data
         return data
         

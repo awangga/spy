@@ -22,7 +22,7 @@ for num in rcptarr:
 	print '*batas*'+num
 	sms.rcpt(num)
 	#time.sleep(3.5)
-	data = sms.send()
+	sms.send()
 	#print data
 	#if 'ERROR' in data:
 	#	print 'gagal kirim'
