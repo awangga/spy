@@ -12,21 +12,36 @@ from messaging.sms import SmsSubmit
 
 class SmsWeb(object):
     def __init__(self, recipient=config.recipient, message=config.message):
-        client = pymongo.MongoClient("localhost", 27017)
-        log = client.log
-        sent = client.sent
         self.logfile = open("modem.log","w")
-        self.open()
+        #self.open()
         self.recipient = recipient
         self.content = message
 
-    def open(self):
+    def openser(self):
         self.ser = serial.Serial(config.serial, 115200, timeout=config.timeout)
         self.ser.flushInput()
         self.ser.flushOutput()
         self.SendCommand('ATZ\r',8)
         self.SendCommand('AT+CMGF=0\r',16)
 
+    def opendb(self):
+	    self.conn = pymongo.MongoClient(config.mongohost, config.mongoport)
+	    self.db = self.conn.smsweb
+    
+    def insertOutbox(self,rcpt,msg):
+	    self.db.outbox
+	    doc = {"rcpt":rcpt,"msg":msg}
+	    return self.db.outbox.insert_one(doc).inserted_id
+    
+    def insertSentitem(self,rcpt,msg,stat):
+	    self.db.sentitems
+	    doc = {"rcpt":rcpt,"msg":msg,"stat":stat}
+	    return self.db.sentitems.insert_one(doc).inserted_id
+    
+    def getOutbox(self):
+	    self.db.outbox
+	    return self.db.outbox.find_one()
+    
     def rcpt(self, number):
         self.recipient = number
 

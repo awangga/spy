@@ -22,3 +22,5 @@ message = "Neng...!!! ieu mamah pake HP batur.. mamah keur aya masalah di kantor
 port = 8181
 timeout = 30
 
+mongohost = "localhost"
+mongoport = 27017
