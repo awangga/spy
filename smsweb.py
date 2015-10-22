@@ -33,9 +33,17 @@ class SmsWeb(object):
     
     def insertSentitem(self,rcpt,msg,stat):
 	    self.db.sentitems
-	    doc = {"rcpt":rcpt,"msg":msg,"stat":stat,"timestamp":str(datetime.now())}
+	    doc = {"rcpt":rcpt,"msg":msg,"timestamp":str(datetime.now()),"idProcess":self.idprocess,"stat":stat}
 	    return self.db.sentitems.insert_one(doc).inserted_id
     
+    def getSentitem(self):
+	    self.db.sentitems
+	    return self.db.sentitems.find_one()
+	    
+    def getSentitems(self):
+	    self.db.sentitems
+	    return self.db.sentitems.find()
+	    
     def getOutbox(self):
 	    self.db.outbox
 	    return self.db.outbox.find_one()
@@ -51,6 +59,9 @@ class SmsWeb(object):
     def msg(self, message):
         self.content = message
 
+    def idProcess(self,idprocess):
+	    self.idprocess = idprocess
+    
     def sends(self):
 	    rcptarr = re.split(',|;',self.recipient)
 	    for num in rcptarr:

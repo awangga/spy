@@ -14,6 +14,7 @@ sw.openser()
 while dt:
 	sw.rcpt(dt["rcpt"])
 	sw.msg(dt["msg"])
+	sw.idProcess(dt["_id"])
 	sw.sends()
 	sw.removeOutbox(dt["_id"])
 	dt=sw.getOutbox()
