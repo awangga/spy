@@ -66,9 +66,10 @@ class SmsWeb(object):
     def sends(self):
 	    rcptarr = re.split(',|;',self.recipient)
 	    for num in rcptarr:
-	    	print '*Sending SMS to: '+num+' \n'
-	    	self.rcpt(num)
-	    	self.send()
+	    	if num:
+		    	print '*Sending SMS to: '+num+' \n'
+		    	self.rcpt(num)
+		    	self.send()
     
     def send(self):
         self.pdu = SmsSubmit(self.recipient, self.content)
