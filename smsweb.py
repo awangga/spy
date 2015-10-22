@@ -12,8 +12,6 @@ from messaging.sms import SmsSubmit
 
 class SmsWeb(object):
     def __init__(self, recipient=config.recipient, message=config.message):
-        self.logfile = open("modem.log","w")
-        #self.open()
         self.recipient = recipient
         self.content = message
 
@@ -35,7 +33,7 @@ class SmsWeb(object):
     
     def insertSentitem(self,rcpt,msg,stat):
 	    self.db.sentitems
-	    doc = {"rcpt":rcpt,"msg":msg,"stat":stat}
+	    doc = {"rcpt":rcpt,"msg":msg,"stat":stat,"timestamp":str(datetime.now())}
 	    return self.db.sentitems.insert_one(doc).inserted_id
     
     def getOutbox(self):
@@ -55,34 +53,30 @@ class SmsWeb(object):
 
     def sends(self):
 	    rcptarr = re.split(',|;',self.recipient)
-	    sms = libs.Libs(rcptarr[0],self.content)
 	    for num in rcptarr:
-	    	print '*Sending SMS to: *'+num
-	    	sms.rcpt(num)
+	    	print '*Sending SMS to: '+num+' \n'
+	    	self.rcpt(num)
 	    	self.send()
     
     def send(self):
         self.pdu = SmsSubmit(self.recipient, self.content)
         for xpdu in self.pdu.to_pdu():
 	        command = 'AT+CMGS=%d\r' % xpdu.length
-	        self.SendCommand(command,len(str(xpdu.length))+14)
+	        a = self.SendCommand(command,len(str(xpdu.length))+14)
 	        command = '%s\x1a' % xpdu.pdu
-	        self.SendCommand(command,len(xpdu.pdu)+20)
-	        self.logfile.write(str(datetime.now()))
-	        self.logfile.write('   after send a sms \n')
-
+	        b = self.SendCommand(command,len(xpdu.pdu)+20)
+	        data = str(a)+str(b)
+	        self.insertSentitem(self.recipient,self.content,data)
+        return data
+	         
     def close(self):
         self.ser.close()
 
     def SendCommand(self,command,char,getline=True):
-        self.logfile.write(str(datetime.now()))
-        self.logfile.write('   before send command '+str(char)+' \n')
         self.ser.write(command)
         data = ''
         if getline:
             data=self.ReadLine(char)
-        self.logfile.write(str(datetime.now()))
-        self.logfile.write('   after send command '+str(char)+' \n')
         return data 
         
     def ReadAll(self):
@@ -91,11 +85,6 @@ class SmsWeb(object):
     
     def ReadLine(self,char):
         data = self.ser.read(char)
-        if 'OK' in data:
-        	print ' berhasil '
-        if 'ERROR' in data:
-        	print ' gagal '
-        print data+' char:<'+str(char)+'> '
         return data
 
     def unreadMsg(self):
