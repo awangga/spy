@@ -10,6 +10,7 @@ import pymongo
 from datetime import datetime
 import serial
 from messaging.sms import SmsSubmit
+from messaging.sms import SmsDeliver
 
 class SmsWeb(object):
     def __init__(self, recipient=config.recipient, message=config.message):
@@ -37,6 +38,10 @@ class SmsWeb(object):
 	    doc = {"rcpt":rcpt,"msg":msg,"timestamp":str(datetime.now()),"idProcess":self.idprocess,"stat":stat}
 	    return self.db.sentitems.insert_one(doc).inserted_id
     
+    def insertInbox(self,data):
+	    self.db.inbox
+	    return self.db.inbox.insert_one(data).inserted_id
+	    
     def getSentitem(self,id):
 	    self.db.sentitems
 	    return self.db.sentitems.find_one({"idProcess":id})
@@ -48,6 +53,10 @@ class SmsWeb(object):
     def getOutbox(self):
 	    self.db.outbox
 	    return self.db.outbox.find_one()
+	
+    def getInbox(self):
+	    self.db.inbox
+	    return self.db.inbox.find_one()
     
     def removeOutbox(self,id):
 	    self.db.outbox
@@ -104,41 +113,67 @@ class SmsWeb(object):
         self.ser.flushInput()
         self.ser.flushOutput()
         command = 'AT+CMGL=0\r\n'
-        self.SendCommand(command,getline=True)
-        data = self.ser.readall()
-        print data
+        data = self.SendCommand(command,16)
+        return data
         
     def readMsg(self):
         self.ser.flushInput()
         self.ser.flushOutput()
         command = 'AT+CMGL=1\r\n'
-        self.SendCommand(command,getline=True)
-        data = self.ser.readall()
-        print data
+        self.ser.write(command)
+        cmd = self.ser.readline()
+        cmd += self.ser.readline()
+        head = self.ser.readline()
+        a = []
+        while "CMGL" in head:
+	        data = self.ser.readline()
+	        sms = SmsDeliver(data.rstrip())
+	        idx = head.rstrip().split(',')[0].split(' ')[1]
+	        self.insertInbox(sms.data)
+	        #print idx
+	        a.append(int(idx))
+	        head = self.ser.readline()
+        return a
 
     def allMsg(self):
         self.ser.flushInput()
         self.ser.flushOutput()
         command = 'AT+CMGL=4\r\n'
-        self.SendCommand(command,getline=True)
-        data = self.ser.readall()
-        print data
+        data = self.SendCommand(command,16)
+        return data
         
     def deleteMsg(self, idx):
         self.ser.flushInput()
         self.ser.flushOutput()
         command = 'AT+CMGD=%s\r\n' % idx
-        self.SendCommand(command,getline=True)
-        data = self.ser.readall()
-        print data
+        return self.SendCommand(command,18)
+        #self.ser.write(command)
+        #data = self.ser.readline()
+        #data += self.ser.readline()
+        #data += self.ser.readline()
+        #return data
 
+    def deleteMsgs(self, idx):
+        #self.ser.flushInput()
+        #self.ser.flushOutput()
+        for id in idx:
+	        command = 'AT+CMGD=%s\r\n' % id
+	        self.SendCommand(command,18)
+        
     def getMsg(self, idx):
         self.ser.flushInput()
         self.ser.flushOutput()
         command = 'AT+CMGR=%s\r\n' % idx
-        self.SendCommand(command,getline=True)
-        data = self.ser.readall()
-        print data        
+        self.ser.write(command)
+        data = self.ser.readline()
+        data += self.ser.readline()
+        data3 = self.ser.readline()
+        data = data+data3
+        if "CMGR" in data3:
+	        data += self.ser.readline()
+	        data += self.ser.readline()
+	        data += self.ser.readline()
+        return data        
     
     def isRunning(self,pid):
     	path = "/proc/"+str(pid)
