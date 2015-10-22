@@ -12,12 +12,14 @@ import cgi
 import smsweb
 import subprocess
 
-form = cgi.FieldStorage()
+#form = cgi.FieldStorage()
 
-rcpt = form["rcpt"].value
-msg = form["msg"].value
+#id = form["id"].value
 
 sw = smsweb.SmsWeb()
 sw.opendb()
-for a in sw.getSentitems():
-	print a
+if not id: 
+	print sw.getSentitem(id)
+else:
+	for a in sw.getSentitems():
+		print a

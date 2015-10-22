@@ -37,9 +37,9 @@ class SmsWeb(object):
 	    doc = {"rcpt":rcpt,"msg":msg,"timestamp":str(datetime.now()),"idProcess":self.idprocess,"stat":stat}
 	    return self.db.sentitems.insert_one(doc).inserted_id
     
-    def getSentitem(self):
+    def getSentitem(self,id):
 	    self.db.sentitems
-	    return self.db.sentitems.find_one()
+	    return self.db.sentitems.find_one({"idProcess":id})
 	    
     def getSentitems(self):
 	    self.db.sentitems
