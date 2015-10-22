@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Spong : spy mongoDB connector
+smsweb : spy mongoDB connector
 """
 import config
 import re
@@ -41,6 +41,11 @@ class SmsWeb(object):
     def getOutbox(self):
 	    self.db.outbox
 	    return self.db.outbox.find_one()
+    
+    def removeOutbox(self,id):
+	    self.db.outbox
+	    return self.db.outbox.delete_many({"_id":id})
+	    
     
     def rcpt(self, number):
         self.recipient = number
