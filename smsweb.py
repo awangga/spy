@@ -3,6 +3,7 @@
 smsweb : spy mongoDB connector
 """
 import config
+import os.path
 import re
 import time
 import pymongo
@@ -137,4 +138,14 @@ class SmsWeb(object):
         self.SendCommand(command,getline=True)
         data = self.ser.readall()
         print data        
-        
+    
+    def isRunning(self,pid):
+    	path = "/proc/"+str(pid)
+    	return os.path.exists(path)
+    	#try:
+    	#	os.kill(pid,0)
+    	#except OSError:
+    	#	return False
+    	#else:
+    	#	return True
+    	
