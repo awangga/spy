@@ -55,6 +55,10 @@ class SmsWeb(object):
 	    self.db.outbox
 	    return self.db.outbox.find_one()
 	
+    def getOutboxs(self):
+	    self.db.outbox
+	    return self.db.outbox.find()
+    
     def getInbox(self):
 	    self.db.inbox
 	    return self.db.inbox.find_one()
@@ -63,6 +67,8 @@ class SmsWeb(object):
 	    self.db.outbox
 	    return self.db.outbox.delete_many({"_id":id})
 	    
+    def dropOutbox(self):
+	    self.db.drop_collection("outbox")
     
     def rcpt(self, number):
         self.recipient = number
