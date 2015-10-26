@@ -32,7 +32,8 @@ class SmsWeb(object):
 	    self.db.outbox
 	    doc = {"rcpt":rcpt,"msg":msg,"timestamp":datetime.now()}
 	    self.db.outbox.insert_one(doc)
-	    return doc
+	    ret = {"rcpt":rcpt,"msg":msg}
+	    return ret
     
     def insertSentitem(self,rcpt,msg,stat):
 	    self.db.sentitems
