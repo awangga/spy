@@ -4,7 +4,7 @@ insert.py -  Program to :
 1. insert to outbox collection, 
 2. check if main is running? if not run then run
 """
-print "Content-Type: application-json"
+print "Content-Type: application/json"
 print
 import cgitb
 cgitb.enable()
