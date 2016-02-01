@@ -38,11 +38,11 @@ at+cmgs=30
 OK
 ```
 
-### AT Command Reference
- [1] http://www.diafaan.com/sms-tutorials/gsm-modem-tutorial/at-cmgf/
- [2] http://www.diafaan.com/sms-tutorials/gsm-modem-tutorial/at-cmgs-text-mode/
- [3] http://www.diafaan.com/sms-tutorials/gsm-modem-tutorial/at-cmgl-text-mode/
- [4] http://andres.jaimes.net/870/setup-mongo-on-centos-6/
- [5] http://www.twit88.com/home/utility/sms-pdu-encode-decode
- [6] https://pypi.python.org/pypi/pymongo/
- [7] http://altons.github.io/python/2013/01/21/gentle-introduction-to-mongodb-using-pymongo/
+### Reference
+ 1. http://www.diafaan.com/sms-tutorials/gsm-modem-tutorial/at-cmgf/
+ 2. http://www.diafaan.com/sms-tutorials/gsm-modem-tutorial/at-cmgs-text-mode/
+ 3. http://www.diafaan.com/sms-tutorials/gsm-modem-tutorial/at-cmgl-text-mode/
+ 4. http://andres.jaimes.net/870/setup-mongo-on-centos-6/
+ 5. http://www.twit88.com/home/utility/sms-pdu-encode-decode
+ 6. https://pypi.python.org/pypi/pymongo/
+ 7. http://altons.github.io/python/2013/01/21/gentle-introduction-to-mongodb-using-pymongo/
